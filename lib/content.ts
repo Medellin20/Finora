@@ -2,7 +2,7 @@ import type { DemandeStatut } from "./types";
 
 /* ---------- Formatage & calculs financiers ---------- */
 
-export function formatMontant(value: number, devise = "MNT") {
+export function formatMontant(value: number, devise = "EUR") {
   if (devise === "MNT" || devise === "₮") {
     // Format volontairement déterministe entre Node et le navigateur : les
     // implémentations d'Intl n'affichent pas toutes MNT de la même manière.
@@ -10,6 +10,13 @@ export function formatMontant(value: number, devise = "MNT") {
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     return `${montant} ₮`;
+  }
+  if (devise === "EUR" || devise === "€") {
+    return new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(Math.round(value));
   }
   return `${new Intl.NumberFormat("fr-FR").format(Math.round(value))} ${devise}`;
 }

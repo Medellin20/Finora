@@ -33,8 +33,8 @@ export const DEFAULT_SETTINGS: Settings = {
   societe: "Finora",
   baseline: "Courtier en crédit en ligne",
   email: "contact@finora.mn",
-  telephone: "+976 7000 0000",
-  whatsapp: "+976 7000 0000",
+  telephone: "+30 210 000 0000",
+  whatsapp: "+30 210 000 0000",
   adresse: "District de Sükhbaatar, Oulan-Bator, Mongolie",
   horaires: "Lundi au vendredi, 8h – 18h",
   facebook: "https://facebook.com/",
@@ -45,7 +45,7 @@ export const DEFAULT_SETTINGS: Settings = {
   montantMax: 150000000,
   dureeMin: 12,
   dureeMax: 120,
-  devise: "MNT",
+  devise: "EUR",
   updatedAt: new Date().toISOString(),
 };
 
@@ -156,10 +156,31 @@ export async function getSettings(): Promise<Settings> {
       type: "json",
       consistency: "strong",
     })) as Partial<Settings> | null;
-    return { ...DEFAULT_SETTINGS, ...(stored ?? {}) };
+    const settings = { ...DEFAULT_SETTINGS, ...(stored ?? {}) };
+    // Migration de l'ancienne devise utilisée avant le passage à l'euro.
+    if (settings.devise === "MNT" || settings.devise === "₮") {
+      settings.devise = "EUR";
+    }
+    if (settings.telephone.startsWith("+976")) {
+      settings.telephone = DEFAULT_SETTINGS.telephone;
+    }
+    if (settings.whatsapp.startsWith("+976")) {
+      settings.whatsapp = DEFAULT_SETTINGS.whatsapp;
+    }
+    return settings;
   }
   const stored = await readJson<Partial<Settings>>(SETTINGS_FILE, {});
-  return { ...DEFAULT_SETTINGS, ...stored };
+  const settings = { ...DEFAULT_SETTINGS, ...stored };
+  if (settings.devise === "MNT" || settings.devise === "₮") {
+    settings.devise = "EUR";
+  }
+  if (settings.telephone.startsWith("+976")) {
+    settings.telephone = DEFAULT_SETTINGS.telephone;
+  }
+  if (settings.whatsapp.startsWith("+976")) {
+    settings.whatsapp = DEFAULT_SETTINGS.whatsapp;
+  }
+  return settings;
 }
 
 export async function saveSettings(patch: Partial<Settings>): Promise<Settings> {

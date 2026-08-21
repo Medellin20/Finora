@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-  if (!/^\d{8}$/.test(telephone)) {
+  if (!/^\d{10}$/.test(telephone)) {
     return NextResponse.json(
-      { error: "Le numéro de téléphone doit contenir exactement 8 chiffres, sans l'indicatif +976." },
+      { error: "Le numéro grec doit contenir exactement 10 chiffres, sans l'indicatif +30." },
       { status: 400 }
     );
   }
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       prenom: texte(body.prenom, 80),
       dateNaissance: texte(body.dateNaissance, 20),
       nationalite: texte(body.nationalite, 60),
-      telephone: `+976 ${telephone}`,
+      telephone: `+30 ${telephone}`,
       email,
       message: texte(body.message, 2000),
     });
