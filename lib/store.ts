@@ -16,7 +16,13 @@ const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
 const NETLIFY_STORE = "finora-data";
 
 function useNetlifyBlobs() {
-  return process.env.NETLIFY === "true";
+  // `NETLIFY` est surtout garanti pendant le build et peut être absent dans
+  // la fonction Next.js à l'exécution. Netlify injecte en revanche ce contexte
+  // dans ses fonctions pour permettre à @netlify/blobs de s'authentifier.
+  const globalContext = (
+    globalThis as typeof globalThis & { netlifyBlobsContext?: unknown }
+  ).netlifyBlobsContext;
+  return Boolean(process.env.NETLIFY_BLOBS_CONTEXT || globalContext);
 }
 
 function blobStore() {
