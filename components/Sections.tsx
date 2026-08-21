@@ -37,7 +37,16 @@ export function Hero({ settings }: { settings: Settings }) {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="grid-paper pointer-events-none absolute inset-0 [mask-image:radial-gradient(70%_60%_at_50%_0%,black,transparent)]" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/hero-finora.png')" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-paper/75"
+      />
+      <div className="grid-paper pointer-events-none absolute inset-0 opacity-35 [mask-image:radial-gradient(70%_60%_at_50%_0%,black,transparent)]" />
       <div className="container-page relative grid gap-14 pb-20 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-16">
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.p
