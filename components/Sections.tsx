@@ -36,18 +36,13 @@ export function Hero({ settings }: { settings: Settings }) {
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative flex min-h-[calc(100vh-72px)] overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/hero-finora.png')" }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-paper/75"
+        className="pointer-events-none absolute inset-0 bg-paper/55"
       />
       <div className="grid-paper pointer-events-none absolute inset-0 opacity-35 [mask-image:radial-gradient(70%_60%_at_50%_0%,black,transparent)]" />
-      <div className="container-page relative grid gap-14 pb-20 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-16">
+      <div className="container-page relative grid flex-1 gap-14 pb-20 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:py-16">
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.p
             variants={item}
@@ -175,7 +170,7 @@ export function Atouts() {
 
 export function Etapes() {
   return (
-    <section className="border-y border-line bg-white py-20 lg:py-24">
+    <section className="border-y border-line bg-white/85 py-20 backdrop-blur-[2px] lg:py-24">
       <div className="container-page grid gap-14 lg:grid-cols-[0.8fr_1.2fr]">
         <Reveal>
           <p className="eyebrow">Le parcours</p>
@@ -271,7 +266,7 @@ export function Temoignages() {
   const liste = [...TEMOIGNAGES, ...TEMOIGNAGES];
 
   return (
-    <section className="overflow-hidden border-y border-line bg-white py-20 lg:py-24">
+    <section className="overflow-hidden border-y border-line bg-white/85 py-20 backdrop-blur-[2px] lg:py-24">
       <div className="container-page">
         <Reveal>
           <p className="eyebrow">Ils ont déposé un dossier</p>
