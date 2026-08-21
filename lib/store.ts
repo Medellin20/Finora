@@ -41,8 +41,8 @@ export const DEFAULT_SETTINGS: Settings = {
   linkedin: "https://linkedin.com/",
   youtube: "",
   tauxAnnuel: 3,
-  montantMin: 500000,
-  montantMax: 150000000,
+  montantMin: 1000,
+  montantMax: 1000000,
   dureeMin: 12,
   dureeMax: 120,
   devise: "EUR",
@@ -157,10 +157,9 @@ export async function getSettings(): Promise<Settings> {
       consistency: "strong",
     })) as Partial<Settings> | null;
     const settings = { ...DEFAULT_SETTINGS, ...(stored ?? {}) };
-    // Migration de l'ancienne devise utilisée avant le passage à l'euro.
-    if (settings.devise === "MNT" || settings.devise === "₮") {
-      settings.devise = "EUR";
-    }
+    settings.devise = "EUR";
+    if (settings.montantMin === 500000) settings.montantMin = 1000;
+    if (settings.montantMax === 150000000) settings.montantMax = 1000000;
     if (settings.tauxAnnuel === 7.9) {
       settings.tauxAnnuel = 3;
     }
@@ -177,9 +176,9 @@ export async function getSettings(): Promise<Settings> {
   }
   const stored = await readJson<Partial<Settings>>(SETTINGS_FILE, {});
   const settings = { ...DEFAULT_SETTINGS, ...stored };
-  if (settings.devise === "MNT" || settings.devise === "₮") {
-    settings.devise = "EUR";
-  }
+  settings.devise = "EUR";
+  if (settings.montantMin === 500000) settings.montantMin = 1000;
+  if (settings.montantMax === 150000000) settings.montantMax = 1000000;
   if (settings.tauxAnnuel === 7.9) {
     settings.tauxAnnuel = 3;
   }
@@ -200,6 +199,7 @@ export async function saveSettings(patch: Partial<Settings>): Promise<Settings> 
   const next: Settings = {
     ...current,
     ...patch,
+    devise: "EUR",
     updatedAt: new Date().toISOString(),
   };
   if (useNetlifyBlobs()) {

@@ -16,7 +16,7 @@ export default function Simulateur({ settings }: { settings: Settings }) {
   const reduce = useReducedMotion();
 
   const [montant, setMontant] = useState(
-    Math.min(5000000, settings.montantMax)
+    Math.min(20000, settings.montantMax)
   );
   const [duree, setDuree] = useState(48);
 
@@ -67,9 +67,9 @@ export default function Simulateur({ settings }: { settings: Settings }) {
             type="range"
             min={settings.montantMin}
             max={settings.montantMax}
-            step={500000}
+            step={1000}
             value={montant}
-            onChange={(e) => setMontant(arrondi(Number(e.target.value), 500000))}
+            onChange={(e) => setMontant(arrondi(Number(e.target.value), 1000))}
           />
           <div className="mt-2 flex justify-between font-mono text-[11px] text-ink/40">
             <span>{formatMontant(settings.montantMin, settings.devise)}</span>

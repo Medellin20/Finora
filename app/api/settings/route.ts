@@ -17,7 +17,6 @@ const CHAMPS_TEXTE: (keyof Settings)[] = [
   "facebook",
   "linkedin",
   "youtube",
-  "devise",
 ];
 
 const CHAMPS_NOMBRE: (keyof Settings)[] = [

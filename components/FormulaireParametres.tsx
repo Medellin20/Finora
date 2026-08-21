@@ -89,7 +89,6 @@ export default function FormulaireParametres({
           titre="Paramètres du simulateur"
           description="Bornes des curseurs et taux utilisé pour estimer les mensualités."
         >
-          <Champ label="Devise" value={form.devise} onChange={set("devise")} />
           <Champ
             label="Taux annuel (%)"
             type="number"

@@ -41,7 +41,7 @@ export default function FormulaireDemande({
 
   const [form, setForm] = useState<FormState>({
     typePret: TYPES_PRET[0],
-    montant: params.get("montant") ?? "5000000",
+    montant: params.get("montant") ?? "20000",
     duree: params.get("duree") ?? "48",
     pays: "Grèce",
     ville: "",
@@ -215,7 +215,7 @@ export default function FormulaireDemande({
                   onChange={set("montant")}
                   min={settings.montantMin}
                   max={settings.montantMax}
-                  step={500000}
+                  step={1000}
                 />
                 <Select
                   label="Durée de remboursement *"
@@ -263,7 +263,7 @@ export default function FormulaireDemande({
                   value={form.revenuMensuel}
                   onChange={set("revenuMensuel")}
                   min={0}
-                  step={100000}
+                  step={100}
                 />
                 <Select
                   label="Situation familiale"

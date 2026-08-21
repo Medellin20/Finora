@@ -2,23 +2,12 @@ import type { DemandeStatut } from "./types";
 
 /* ---------- Formatage & calculs financiers ---------- */
 
-export function formatMontant(value: number, devise = "EUR") {
-  if (devise === "MNT" || devise === "₮") {
-    // Format volontairement déterministe entre Node et le navigateur : les
-    // implémentations d'Intl n'affichent pas toutes MNT de la même manière.
-    const montant = Math.round(value)
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    return `${montant} ₮`;
-  }
-  if (devise === "EUR" || devise === "€") {
-    return new Intl.NumberFormat("fr-FR", {
-      style: "currency",
-      currency: "EUR",
-      maximumFractionDigits: 0,
-    }).format(Math.round(value));
-  }
-  return `${new Intl.NumberFormat("fr-FR").format(Math.round(value))} ${devise}`;
+export function formatMontant(value: number, _devise = "EUR") {
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(Math.round(value));
 }
 
 export function formatDate(iso: string) {
@@ -98,7 +87,7 @@ export const SOLUTIONS = [
     titre: "Prêt personnel",
     resume:
       "Un budget libre pour vos projets du quotidien : véhicule, travaux, études, événement familial.",
-    montant: "500 000 – 30 000 000 ₮",
+    montant: "1 000 € – 75 000 €",
     duree: "12 à 84 mois",
     points: [
       "Aucun justificatif d'utilisation à fournir",
@@ -111,7 +100,7 @@ export const SOLUTIONS = [
     titre: "Prêt professionnel",
     resume:
       "Financez votre stock, votre matériel ou votre besoin en fonds de roulement sans bloquer votre trésorerie.",
-    montant: "1 000 000 – 80 000 000 ₮",
+    montant: "5 000 € – 500 000 €",
     duree: "12 à 96 mois",
     points: [
       "Étude basée sur votre chiffre d'affaires réel",
@@ -124,7 +113,7 @@ export const SOLUTIONS = [
     titre: "Prêt immobilier",
     resume:
       "Achat, construction ou rénovation : nous négocions les conditions auprès de nos banques partenaires.",
-    montant: "5 000 000 – 150 000 000 ₮",
+    montant: "20 000 € – 1 000 000 €",
     duree: "60 à 120 mois",
     points: [
       "Comparaison de plusieurs offres bancaires",
@@ -199,7 +188,7 @@ export const FAQ = [
   {
     question: "Combien puis-je emprunter ?",
     reponse:
-      "De 500 000 à 150 000 000 ₮ selon le type de projet et votre capacité de remboursement. Si le montant demandé ne passe pas, nous vous proposons une alternative chiffrée plutôt qu'un simple refus.",
+      "De 1 000 € à 1 000 000 € selon le type de projet et votre capacité de remboursement. Si le montant demandé ne passe pas, nous vous proposons une alternative chiffrée plutôt qu'un simple refus.",
   },
   {
     question: "Comment êtes-vous rémunérés ?",
