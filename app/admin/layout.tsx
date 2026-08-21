@@ -17,7 +17,7 @@ export default async function AdminLayout({
   const settings = await getSettings();
 
   return (
-    <div className="min-h-screen bg-paper">
+    <div className="min-h-screen bg-paper/45">
       <AdminNav societe={settings.societe} />
       <main className="mx-auto w-full max-w-[1180px] px-5 py-10 sm:px-8">
         {children}

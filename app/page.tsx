@@ -19,10 +19,7 @@ export default async function HomePage() {
   return (
     <>
       <Header settings={settings} />
-      <main
-        className="bg-cover bg-center bg-no-repeat lg:bg-fixed"
-        style={{ backgroundImage: "url('/finance-page-background.png')" }}
-      >
+      <main>
         <Hero settings={settings} />
         <Atouts />
         <Etapes />
