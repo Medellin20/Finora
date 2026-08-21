@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: "ss01" on, "cv01" on;
+    top: 0 !important;
+    background-color: #f3f7f4;
+    background-image:
+      radial-gradient(circle at 8% 4%, rgba(13, 79, 60, 0.1), transparent 28rem),
+      radial-gradient(circle at 92% 16%, rgba(232, 163, 61, 0.1), transparent 24rem),
+      linear-gradient(rgba(13, 79, 60, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(13, 79, 60, 0.045) 1px, transparent 1px);
+    background-size: auto, auto, 48px 48px, 48px 48px;
+    background-attachment: fixed;
+  }
+
+  /* Le widget sert uniquement de moteur au sélecteur Finora. */
+  .goog-te-banner-frame,
+  .skiptranslate iframe,
+  #goog-gt-tt,
+  .goog-te-balloon-frame {
+    display: none !important;
+  }
+
+  ::selection {
+    @apply bg-forest text-mint;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+    font-variation-settings: "wdth" 100;
+  }
+
+  /* Focus visible cohérent sur tout le site */
+  :focus-visible {
+    outline: 2px solid #0d4f3c;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply font-sans;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background-size: auto, auto, 32px 32px, 32px 32px;
+    background-attachment: scroll;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1180px] px-5 sm:px-8;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-forest-light;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill px-6 py-3 text-sm font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply btn bg-forest text-mint hover:bg-forest-deep hover:shadow-lift active:scale-[0.98];
+  }
+
+  .btn-accent {
+    @apply btn bg-amber text-ink hover:brightness-105 hover:shadow-lift active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply btn border border-line bg-white/70 text-ink hover:border-forest hover:text-forest;
+  }
+
+  .card {
+    @apply rounded-card border border-line bg-white shadow-soft;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-[13px] font-semibold text-ink/70;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-ink/35 focus:border-forest;
+  }
+
+  /* Trame « papier millimétré » : rappel des tableaux d'amortissement */
+  .grid-paper {
+    background-image: linear-gradient(
+        to right,
+        rgba(13, 79, 60, 0.07) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(13, 79, 60, 0.07) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
+
+/* Slider de simulation */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #dcdfd8;
+  outline-offset: 6px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 26px;
+  width: 26px;
+  border-radius: 999px;
+  background: #0d4f3c;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(10, 31, 27, 0.25);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  background: #0d4f3c;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(10, 31, 27, 0.25);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
