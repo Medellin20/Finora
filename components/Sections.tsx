@@ -55,29 +55,7 @@ export function Hero({ settings }: { settings: Settings }) {
             variants={item}
             className="mt-6 text-[40px] font-bold leading-[1.03] sm:text-[54px] lg:text-[62px]"
           >
-            Financez vos projets
-            <br />
-            <span className="relative inline-block">
-              sans deviner
-              <svg
-                aria-hidden
-                viewBox="0 0 300 12"
-                preserveAspectRatio="none"
-                className="absolute -bottom-1 left-0 h-2.5 w-full text-amber"
-              >
-                <motion.path
-                  d="M2 8C60 3 120 3 180 6c40 2 80 1 118-2"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="5"
-                  strokeLinecap="round"
-                  initial={reduce ? false : { pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.9, delay: 0.5, ease: "easeOut" }}
-                />
-              </svg>
-            </span>{" "}
-            le coût.
+            Obtenez votre prêt sans complication.
           </motion.h1>
 
           <motion.p

@@ -79,6 +79,10 @@ export default function FormulaireDemande({
       setErreur("L'adresse e-mail saisie n'est pas valide.");
       return false;
     }
+    if (index === 2 && !/^\d{8}$/.test(form.telephone)) {
+      setErreur("Le numéro de téléphone doit contenir exactement 8 chiffres, sans l'indicatif +976.");
+      return false;
+    }
     setErreur(null);
     return true;
   }
@@ -97,8 +101,26 @@ export default function FormulaireDemande({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Envoi impossible");
+      const responseText = await res.text();
+      let data: { id?: string; error?: string } = {};
+
+      if (responseText) {
+        try {
+          data = JSON.parse(responseText) as { id?: string; error?: string };
+        } catch {
+          // Netlify peut renvoyer une page ou un corps non JSON si la fonction échoue.
+        }
+      }
+
+      if (!res.ok) {
+        throw new Error(
+          data.error ||
+            "Le serveur n'a pas pu enregistrer votre dossier. Réessayez dans un instant."
+        );
+      }
+      if (!data.id) {
+        throw new Error("Le serveur a renvoyé une réponse incomplète. Réessayez.");
+      }
       setReference(data.id);
     } catch (e) {
       setErreur(
@@ -124,7 +146,7 @@ export default function FormulaireDemande({
         <h2 className="mt-6 text-[26px] font-bold">Dossier bien reçu</h2>
         <p className="mx-auto mt-3 max-w-[46ch] text-[15px] leading-relaxed text-ink/65">
           Un conseiller examine votre demande et vous rappelle sous 24 heures
-          ouvrées au {form.telephone}. Conservez votre référence de suivi.
+          ouvrées au +976 {form.telephone}. Conservez votre référence de suivi.
         </p>
         <p className="mt-7 inline-block rounded-xl bg-paper px-5 py-3 font-mono text-[15px] font-semibold">
           {reference}
@@ -273,13 +295,34 @@ export default function FormulaireDemande({
                   value={form.nationalite}
                   onChange={set("nationalite")}
                 />
-                <Input
-                  label="Téléphone *"
-                  type="tel"
-                  value={form.telephone}
-                  onChange={set("telephone")}
-                  placeholder="+976 ..."
-                />
+                <div>
+                  <label className="field-label" htmlFor="telephone">
+                    Téléphone *
+                  </label>
+                  <div className="flex">
+                    <span className="flex items-center rounded-l-xl border border-r-0 border-line bg-paper px-4 font-mono text-sm text-ink/65">
+                      +976
+                    </span>
+                    <input
+                      id="telephone"
+                      type="tel"
+                      inputMode="numeric"
+                      autoComplete="tel-national"
+                      value={form.telephone}
+                      onChange={(e) =>
+                        set("telephone")(e.target.value.replace(/\D/g, "").slice(0, 8))
+                      }
+                      maxLength={8}
+                      pattern="[0-9]{8}"
+                      placeholder="99112233"
+                      className="field rounded-l-none"
+                      aria-describedby="telephone-aide"
+                    />
+                  </div>
+                  <p id="telephone-aide" className="mt-1.5 text-xs text-ink/55">
+                    8 chiffres exactement, sans l'indicatif +976.
+                  </p>
+                </div>
                 <Input
                   label="E-mail *"
                   type="email"

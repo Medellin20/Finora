@@ -28,12 +28,18 @@ export async function POST(request: NextRequest) {
 
   const email = texte(body.email, 160);
   const nom = texte(body.nom, 80);
-  const telephone = texte(body.telephone, 40);
+  const telephone = texte(body.telephone, 40).replace(/\D/g, "");
   const montant = nombre(body.montant);
 
-  if (!nom || !telephone || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!nom || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json(
-      { error: "Nom, téléphone et e-mail valide sont requis." },
+      { error: "Le nom et une adresse e-mail valide sont requis." },
+      { status: 400 }
+    );
+  }
+  if (!/^\d{8}$/.test(telephone)) {
+    return NextResponse.json(
+      { error: "Le numéro de téléphone doit contenir exactement 8 chiffres, sans l'indicatif +976." },
       { status: 400 }
     );
   }
@@ -44,28 +50,39 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const demande = await createDemande({
-    typePret: texte(body.typePret, 60),
-    montant,
-    duree: nombre(body.duree) || 12,
-    pays: texte(body.pays, 80),
-    ville: texte(body.ville, 80),
-    adresse: texte(body.adresse, 200),
-    logement: texte(body.logement, 40),
-    situationPro: texte(body.situationPro, 60),
-    revenuMensuel: nombre(body.revenuMensuel),
-    situationFamiliale: texte(body.situationFamiliale, 40),
-    civilite: texte(body.civilite, 20),
-    nom,
-    prenom: texte(body.prenom, 80),
-    dateNaissance: texte(body.dateNaissance, 20),
-    nationalite: texte(body.nationalite, 60),
-    telephone,
-    email,
-    message: texte(body.message, 2000),
-  });
+  try {
+    const demande = await createDemande({
+      typePret: texte(body.typePret, 60),
+      montant,
+      duree: nombre(body.duree) || 12,
+      pays: texte(body.pays, 80),
+      ville: texte(body.ville, 80),
+      adresse: texte(body.adresse, 200),
+      logement: texte(body.logement, 40),
+      situationPro: texte(body.situationPro, 60),
+      revenuMensuel: nombre(body.revenuMensuel),
+      situationFamiliale: texte(body.situationFamiliale, 40),
+      civilite: texte(body.civilite, 20),
+      nom,
+      prenom: texte(body.prenom, 80),
+      dateNaissance: texte(body.dateNaissance, 20),
+      nationalite: texte(body.nationalite, 60),
+      telephone: `+976 ${telephone}`,
+      email,
+      message: texte(body.message, 2000),
+    });
 
-  return NextResponse.json({ id: demande.id }, { status: 201 });
+    return NextResponse.json({ id: demande.id }, { status: 201 });
+  } catch (error) {
+    console.error("Impossible d'enregistrer le dossier :", error);
+    return NextResponse.json(
+      {
+        error:
+          "L'enregistrement du dossier est temporairement indisponible. Réessayez dans un instant.",
+      },
+      { status: 500 }
+    );
+  }
 }
 
 /** Liste des dossiers — réservé à l'admin. */
