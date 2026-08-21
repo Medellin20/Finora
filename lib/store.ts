@@ -30,7 +30,7 @@ function blobStore() {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  societe: "Finora",
+  societe: "BOULANGER FINANCE INTER",
   baseline: "Courtier en crédit en ligne",
   email: "contact@finora.mn",
   telephone: "+30 210 000 0000",
@@ -161,6 +161,9 @@ export async function getSettings(): Promise<Settings> {
     if (settings.devise === "MNT" || settings.devise === "₮") {
       settings.devise = "EUR";
     }
+    if (settings.societe === "Finora") {
+      settings.societe = DEFAULT_SETTINGS.societe;
+    }
     if (settings.telephone.startsWith("+976")) {
       settings.telephone = DEFAULT_SETTINGS.telephone;
     }
@@ -173,6 +176,9 @@ export async function getSettings(): Promise<Settings> {
   const settings = { ...DEFAULT_SETTINGS, ...stored };
   if (settings.devise === "MNT" || settings.devise === "₮") {
     settings.devise = "EUR";
+  }
+  if (settings.societe === "Finora") {
+    settings.societe = DEFAULT_SETTINGS.societe;
   }
   if (settings.telephone.startsWith("+976")) {
     settings.telephone = DEFAULT_SETTINGS.telephone;

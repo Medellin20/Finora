@@ -10,13 +10,13 @@ const openSans = Open_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Finora — Courtier en crédit en ligne",
-    template: "%s · Finora",
+    default: "BOULANGER FINANCE INTER",
+    template: "%s · BOULANGER FINANCE INTER",
   },
   description:
     "Simulez votre prêt, déposez votre dossier en ligne et recevez une réponse de principe le jour même. Prêt personnel, professionnel et immobilier.",
   openGraph: {
-    title: "Finora — Courtier en crédit en ligne",
+    title: "BOULANGER FINANCE INTER",
     description:
       "Simulez, déposez votre dossier, recevez les fonds sous 72 heures ouvrées.",
     locale: "fr_FR",

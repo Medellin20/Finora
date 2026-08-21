@@ -192,9 +192,9 @@ export const TEMOIGNAGES = [
 
 export const FAQ = [
   {
-    question: "Qui est Finora exactement ?",
+    question: "Qui est BOULANGER FINANCE INTER exactement ?",
     reponse:
-      "Finora est un cabinet de courtage en financement. Nous ne prêtons pas nos propres fonds : nous montons votre dossier, puis nous le présentons à nos établissements partenaires pour obtenir les meilleures conditions selon votre profil.",
+      "BOULANGER FINANCE INTER est un cabinet de courtage en financement. Nous ne prêtons pas nos propres fonds : nous montons votre dossier, puis nous le présentons à nos établissements partenaires pour obtenir les meilleures conditions selon votre profil.",
   },
   {
     question: "Combien puis-je emprunter ?",
