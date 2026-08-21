@@ -42,9 +42,9 @@ export const DEFAULT_SETTINGS: Settings = {
   youtube: "",
   tauxAnnuel: 3,
   montantMin: 1000,
-  montantMax: 1000000,
+  montantMax: 150000000,
   dureeMin: 12,
-  dureeMax: 120,
+  dureeMax: 240,
   devise: "EUR",
   updatedAt: new Date().toISOString(),
 };
@@ -159,7 +159,8 @@ export async function getSettings(): Promise<Settings> {
     const settings = { ...DEFAULT_SETTINGS, ...(stored ?? {}) };
     settings.devise = "EUR";
     if (settings.montantMin === 500000) settings.montantMin = 1000;
-    if (settings.montantMax === 150000000) settings.montantMax = 1000000;
+    if (settings.montantMax === 1000000) settings.montantMax = 150000000;
+    if (settings.dureeMax === 120) settings.dureeMax = 240;
     if (settings.tauxAnnuel === 7.9) {
       settings.tauxAnnuel = 3;
     }
@@ -178,7 +179,8 @@ export async function getSettings(): Promise<Settings> {
   const settings = { ...DEFAULT_SETTINGS, ...stored };
   settings.devise = "EUR";
   if (settings.montantMin === 500000) settings.montantMin = 1000;
-  if (settings.montantMax === 150000000) settings.montantMax = 1000000;
+  if (settings.montantMax === 1000000) settings.montantMax = 150000000;
+  if (settings.dureeMax === 120) settings.dureeMax = 240;
   if (settings.tauxAnnuel === 7.9) {
     settings.tauxAnnuel = 3;
   }

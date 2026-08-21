@@ -242,16 +242,6 @@ export function Solutions() {
               <p className="mt-3 text-[14.5px] leading-relaxed text-ink/65">
                 {s.resume}
               </p>
-              <dl className="mt-6 space-y-2 border-t border-line pt-5 font-mono text-[12.5px]">
-                <div className="flex justify-between gap-3">
-                  <dt className="text-ink/45">Montant</dt>
-                  <dd className="text-right font-medium">{s.montant}</dd>
-                </div>
-                <div className="flex justify-between gap-3">
-                  <dt className="text-ink/45">Durée</dt>
-                  <dd className="text-right font-medium">{s.duree}</dd>
-                </div>
-              </dl>
             </Link>
           </Reveal>
         ))}

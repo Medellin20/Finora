@@ -44,7 +44,7 @@ export const TYPES_PRET = [
   "Trésorerie rapide",
 ];
 
-export const DUREES = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120];
+export const DUREES = Array.from({ length: 20 }, (_, index) => (index + 1) * 12);
 
 export const LOGEMENTS = ["Locataire", "Propriétaire", "Hébergé"];
 
@@ -113,8 +113,8 @@ export const SOLUTIONS = [
     titre: "Prêt immobilier",
     resume:
       "Achat, construction ou rénovation : nous négocions les conditions auprès de nos banques partenaires.",
-    montant: "20 000 € – 1 000 000 €",
-    duree: "60 à 120 mois",
+    montant: "20 000 € – 150 000 000 €",
+    duree: "60 à 240 mois",
     points: [
       "Comparaison de plusieurs offres bancaires",
       "Accompagnement jusqu'à la signature notariée",
@@ -188,7 +188,7 @@ export const FAQ = [
   {
     question: "Combien puis-je emprunter ?",
     reponse:
-      "De 1 000 € à 1 000 000 € selon le type de projet et votre capacité de remboursement. Si le montant demandé ne passe pas, nous vous proposons une alternative chiffrée plutôt qu'un simple refus.",
+      "De 1 000 € à 150 000 000 € selon le type de projet et votre capacité de remboursement. Si le montant demandé ne passe pas, nous vous proposons une alternative chiffrée plutôt qu'un simple refus.",
   },
   {
     question: "Comment êtes-vous rémunérés ?",
