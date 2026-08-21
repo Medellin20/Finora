@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 const LANGUAGES = [
   { code: "fr", label: "Français" },
+  { code: "el", label: "Ελληνικά" },
   { code: "mn", label: "Монгол" },
   { code: "en", label: "English" },
   { code: "de", label: "Deutsch" },
@@ -40,7 +41,11 @@ export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean 
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!mobile) window.googleTranslateElementInit = initTranslate;
+    if (!mobile) {
+      window.googleTranslateElementInit = initTranslate;
+      // Le script peut déjà être chargé après une navigation interne.
+      initTranslate();
+    }
     const saved = window.localStorage.getItem("finora-language");
     if (saved && LANGUAGES.some((item) => item.code === saved)) setLanguage(saved);
 
@@ -50,7 +55,6 @@ export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean 
     document.addEventListener("mousedown", close);
     return () => {
       document.removeEventListener("mousedown", close);
-      if (!mobile) delete window.googleTranslateElementInit;
     };
   }, [mobile]);
 
@@ -82,10 +86,14 @@ export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean 
     setOpen(false);
     window.localStorage.setItem("finora-language", code);
 
-    const select = document.querySelector<HTMLSelectElement>(".goog-te-combo");
-    if (!select) return;
-    select.value = code === "fr" ? "" : code;
-    select.dispatchEvent(new Event("change", { bubbles: true }));
+    // Le cookie est lu par Google Translate au chargement. Cette méthode reste
+    // fiable même si son sélecteur n'est pas encore prêt ou sur mobile.
+    if (code === "fr") {
+      document.cookie = "googtrans=; path=/; max-age=0; SameSite=Lax";
+    } else {
+      document.cookie = `googtrans=/fr/${code}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    window.location.reload();
   }
 
   const current = LANGUAGES.find((item) => item.code === language) ?? LANGUAGES[0];

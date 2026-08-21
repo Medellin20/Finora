@@ -40,7 +40,7 @@ export const DEFAULT_SETTINGS: Settings = {
   facebook: "https://facebook.com/",
   linkedin: "https://linkedin.com/",
   youtube: "",
-  tauxAnnuel: 7.9,
+  tauxAnnuel: 3,
   montantMin: 500000,
   montantMax: 150000000,
   dureeMin: 12,
@@ -161,6 +161,9 @@ export async function getSettings(): Promise<Settings> {
     if (settings.devise === "MNT" || settings.devise === "₮") {
       settings.devise = "EUR";
     }
+    if (settings.tauxAnnuel === 7.9) {
+      settings.tauxAnnuel = 3;
+    }
     if (settings.societe === "Finora") {
       settings.societe = DEFAULT_SETTINGS.societe;
     }
@@ -176,6 +179,9 @@ export async function getSettings(): Promise<Settings> {
   const settings = { ...DEFAULT_SETTINGS, ...stored };
   if (settings.devise === "MNT" || settings.devise === "₮") {
     settings.devise = "EUR";
+  }
+  if (settings.tauxAnnuel === 7.9) {
+    settings.tauxAnnuel = 3;
   }
   if (settings.societe === "Finora") {
     settings.societe = DEFAULT_SETTINGS.societe;
