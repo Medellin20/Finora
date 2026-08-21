@@ -73,8 +73,6 @@ export default async function SolutionPage({
               <p className="eyebrow">Conditions indicatives</p>
               <dl className="mt-5 divide-y divide-line">
                 {[
-                  ["Montant", solution.montant],
-                  ["Durée", solution.duree],
                   ["Taux annuel", `à partir de ${settings.tauxAnnuel}%`],
                   ["Réponse de principe", "le jour même"],
                   ["Frais avant déblocage", "aucun"],
