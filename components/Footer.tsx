@@ -104,6 +104,47 @@ export default function Footer({ settings }: { settings: Settings }) {
             </li>
           </ul>
         </div>
+
+        <section className="border-t border-mint/12 pt-8 md:col-span-3">
+          <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber">
+            Informations légales
+          </h3>
+          <div className="mt-5 max-w-5xl space-y-3 text-[13px] leading-relaxed text-mint/65">
+            <p>
+              <strong className="font-semibold text-mint/80">
+                Raison sociale et siège social :
+              </strong>{" "}
+              Le présent site est la propriété de la société BOULANGER
+              FINANCE INTER, inscrite au registre du commerce et des sociétés
+              de LILLE METROPOLE.
+            </p>
+            <p>
+              <strong className="font-semibold text-mint/80">N° SIREN :</strong>{" "}
+              325 307 146
+              <br />
+              <strong className="font-semibold text-mint/80">
+                Siège social :
+              </strong>{" "}
+              RUE DE LA PAIX, 75002 PARIS, FRANCE
+              <br />
+              <strong className="font-semibold text-mint/80">
+                Directeur de la publication :
+              </strong>{" "}
+              ELISABETH BOULANGER
+              <br />
+              <strong className="font-semibold text-mint/80">Capital :</strong>{" "}
+              867 500 000 €
+            </p>
+            <p>
+              Agréée en qualité d&apos;Établissement de Crédit Spécialisé et
+              soumise au contrôle de l&apos;Autorité de Contrôle Prudentiel et de
+              Résolution, 4 Place de Budapest, CS 92459, 75436 Paris Cedex 09.
+              <br />
+              <strong className="font-semibold text-mint/80">N° TVA :</strong>{" "}
+              FR 62325307106
+            </p>
+          </div>
+        </section>
       </div>
 
       <div className="border-t border-mint/12">
