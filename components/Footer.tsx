@@ -1,5 +1,18 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone, Clock, Facebook, Linkedin, Youtube } from "lucide-react";
+import {
+  Building2,
+  Clock,
+  Facebook,
+  FileBadge,
+  Landmark,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  ShieldCheck,
+  UserRound,
+  Youtube,
+} from "lucide-react";
 import type { Settings } from "@/lib/types";
 import { SOLUTIONS } from "@/lib/content";
 
@@ -105,44 +118,112 @@ export default function Footer({ settings }: { settings: Settings }) {
           </ul>
         </div>
 
-        <section className="border-t border-mint/12 pt-8 md:col-span-3">
-          <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber">
-            Informations légales
-          </h3>
-          <div className="mt-5 max-w-5xl space-y-3 text-[13px] leading-relaxed text-mint/65">
-            <p>
-              <strong className="font-semibold text-mint/80">
-                Raison sociale et siège social :
-              </strong>{" "}
-              Le présent site est la propriété de la société BOULANGER
-              FINANCE INTER, inscrite au registre du commerce et des sociétés
-              de LILLE METROPOLE.
+        <section className="border-t border-mint/15 pt-9 md:col-span-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-mint/45">
+                Transparence &amp; réglementation
+              </p>
+              <h3 className="mt-1 font-display text-lg font-semibold text-mint">
+                Informations légales
+              </h3>
+            </div>
+            <p className="max-w-md text-[12px] leading-relaxed text-mint/50 sm:text-right">
+              Informations d&apos;identification et cadre réglementaire de
+              BOULANGER FINANCE INTER.
             </p>
-            <p>
-              <strong className="font-semibold text-mint/80">N° SIREN :</strong>{" "}
-              325 307 146
-              <br />
-              <strong className="font-semibold text-mint/80">
-                Siège social :
-              </strong>{" "}
-              RUE DE LA PAIX, 75002 PARIS, FRANCE
-              <br />
-              <strong className="font-semibold text-mint/80">
-                Directeur de la publication :
-              </strong>{" "}
-              ELISABETH BOULANGER
-              <br />
-              <strong className="font-semibold text-mint/80">Capital :</strong>{" "}
-              867 500 000 €
-            </p>
-            <p>
-              Agréée en qualité d&apos;Établissement de Crédit Spécialisé et
-              soumise au contrôle de l&apos;Autorité de Contrôle Prudentiel et de
-              Résolution, 4 Place de Budapest, CS 92459, 75436 Paris Cedex 09.
-              <br />
-              <strong className="font-semibold text-mint/80">N° TVA :</strong>{" "}
-              FR 62325307106
-            </p>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-2xl border border-mint/10 bg-white/[0.035] p-4">
+              <Building2 size={18} className="text-amber" aria-hidden />
+              <p className="mt-3 text-[10px] uppercase tracking-[0.14em] text-mint/45">
+                Raison sociale
+              </p>
+              <p className="mt-1 text-[13px] font-semibold text-mint/85">
+                BOULANGER FINANCE INTER
+              </p>
+              <p className="mt-2 text-[12px] leading-relaxed text-mint/55">
+                Propriétaire du présent site, inscrite au RCS de LILLE
+                METROPOLE.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-mint/10 bg-white/[0.035] p-4">
+              <FileBadge size={18} className="text-amber" aria-hidden />
+              <dl className="mt-3 space-y-3 text-[12px]">
+                <div>
+                  <dt className="text-[10px] uppercase tracking-[0.14em] text-mint/45">
+                    N° SIREN
+                  </dt>
+                  <dd className="mt-1 font-mono text-[13px] text-mint/85">
+                    325 307 146
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[10px] uppercase tracking-[0.14em] text-mint/45">
+                    N° TVA
+                  </dt>
+                  <dd className="mt-1 font-mono text-[13px] text-mint/85">
+                    FR 62325307106
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="rounded-2xl border border-mint/10 bg-white/[0.035] p-4">
+              <MapPin size={18} className="text-amber" aria-hidden />
+              <p className="mt-3 text-[10px] uppercase tracking-[0.14em] text-mint/45">
+                Siège social
+              </p>
+              <address className="mt-1 text-[13px] not-italic leading-relaxed text-mint/85">
+                RUE DE LA PAIX
+                <br />
+                75002 PARIS, FRANCE
+              </address>
+            </div>
+
+            <div className="rounded-2xl border border-mint/10 bg-white/[0.035] p-4">
+              <UserRound size={18} className="text-amber" aria-hidden />
+              <dl className="mt-3 space-y-3 text-[12px]">
+                <div>
+                  <dt className="text-[10px] uppercase tracking-[0.14em] text-mint/45">
+                    Directeur de la publication
+                  </dt>
+                  <dd className="mt-1 text-[13px] font-semibold text-mint/85">
+                    ELISABETH BOULANGER
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[10px] uppercase tracking-[0.14em] text-mint/45">
+                    Capital
+                  </dt>
+                  <dd className="mt-1 font-mono text-[13px] text-mint/85">
+                    867 500 000 €
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <div className="mt-3 flex gap-3 rounded-2xl border border-amber/20 bg-amber/[0.06] p-4">
+            <ShieldCheck
+              size={20}
+              className="mt-0.5 shrink-0 text-amber"
+              aria-hidden
+            />
+            <div>
+              <p className="flex items-center gap-2 text-[12px] font-semibold text-mint/85">
+                <Landmark size={14} aria-hidden />
+                Établissement réglementé
+              </p>
+              <p className="mt-1 text-[12px] leading-relaxed text-mint/60">
+                Agréée en qualité d&apos;Établissement de Crédit Spécialisé
+                et soumise au contrôle de l&apos;Autorité de Contrôle Prudentiel
+                et de Résolution, 4 Place de Budapest, CS 92459, 75436 Paris
+                Cedex 09.
+              </p>
+            </div>
           </div>
         </section>
       </div>
