@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CircleAlert, Lock } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 function FormulaireConnexion() {
   const router = useRouter();
@@ -103,7 +104,8 @@ function FormulaireConnexion() {
 
 export default function LoginPage() {
   return (
-    <main className="grid-paper flex min-h-screen items-center justify-center px-5 py-16">
+    <main className="grid-paper relative flex min-h-screen items-center justify-center px-5 py-16">
+      <div className="absolute right-5 top-5"><LanguageSwitcher /></div>
       <Suspense fallback={<div className="card h-[420px] w-full max-w-[420px]" />}>
         <FormulaireConnexion />
       </Suspense>

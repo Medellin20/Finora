@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ExternalLink, Inbox, LogOut, Settings2, Landmark } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const LIENS = [
   { href: "/admin", label: "Dossiers", Icon: Inbox },
@@ -64,6 +65,7 @@ export default function AdminNav({ societe }: { societe: string }) {
         </div>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <Link
             href="/"
             target="_blank"

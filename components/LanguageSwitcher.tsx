@@ -37,7 +37,7 @@ declare global {
 
 export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean }) {
   const [open, setOpen] = useState(false);
-  const [language, setLanguage] = useState("fr");
+  const [language, setLanguage] = useState("it");
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,7 +47,17 @@ export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean 
       initTranslate();
     }
     const saved = window.localStorage.getItem("finora-language");
-    if (saved && LANGUAGES.some((item) => item.code === saved)) setLanguage(saved);
+    if (saved && LANGUAGES.some((item) => item.code === saved)) {
+      setLanguage(saved);
+      document.documentElement.lang = saved;
+    } else if (!mobile) {
+      // La première visite s'ouvre en italien. Le cookie est défini avant le
+      // chargement du widget afin que Google traduise dès le prochain rendu.
+      window.localStorage.setItem("finora-language", "it");
+      document.cookie = "googtrans=/fr/it; path=/; max-age=31536000; SameSite=Lax";
+      window.location.reload();
+      return;
+    }
 
     const close = (event: MouseEvent) => {
       if (!root.current?.contains(event.target as Node)) setOpen(false);
@@ -85,6 +95,7 @@ export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean 
     setLanguage(code);
     setOpen(false);
     window.localStorage.setItem("finora-language", code);
+    document.documentElement.lang = code;
 
     // Le cookie est lu par Google Translate au chargement. Cette méthode reste
     // fiable même si son sélecteur n'est pas encore prêt ou sur mobile.
