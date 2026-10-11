@@ -18,6 +18,9 @@ const CHAMPS_TEXTE: (keyof Settings)[] = [
   "linkedin",
   "youtube",
   "rib",
+  "iban",
+  "bic",
+  "paymentLink",
   "titulaireRib",
 ];
 
@@ -46,6 +49,16 @@ export async function PUT(request: NextRequest) {
   for (const champ of CHAMPS_TEXTE) {
     if (typeof body[champ] === "string") {
       patch[champ] = body[champ].trim().slice(0, 300);
+    }
+  }
+  if (typeof patch.paymentLink === "string" && patch.paymentLink) {
+    try {
+      if (new URL(patch.paymentLink).protocol !== "https:") throw new Error();
+    } catch {
+      return NextResponse.json(
+        { error: "Le lien de paiement doit être une adresse HTTPS valide." },
+        { status: 400 }
+      );
     }
   }
   for (const champ of CHAMPS_NOMBRE) {

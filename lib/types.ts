@@ -54,6 +54,9 @@ export interface Settings {
   dureeMax: number;
   devise: string;
   rib: string;
+  iban: string;
+  bic: string;
+  paymentLink: string;
   titulaireRib: string;
   fraisDossier: number;
   updatedAt: string;

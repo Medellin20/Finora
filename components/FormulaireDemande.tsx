@@ -359,7 +359,16 @@ export default function FormulaireDemande({
                   <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Montant des frais</p>
                   <p className="mt-1 text-[24px] font-bold">{formatMontant(settings.fraisDossier, settings.devise)}</p>
                   <p className="mt-5 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Coordonnées bancaires pour le paiement</p>
-                  <p className="mt-1 whitespace-pre-wrap break-words font-mono text-[15px]">{settings.rib || "Les coordonnées bancaires seront communiquées prochainement."}</p>
+                  {settings.paymentLink ? (
+                    <a href={settings.paymentLink} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-[15px] font-semibold text-forest underline underline-offset-4">Ouvrir le lien de paiement</a>
+                  ) : (
+                    <div className="mt-2 space-y-2 font-mono text-[14px]">
+                      {settings.iban && <p className="break-all"><span className="font-sans font-semibold">IBAN : </span>{settings.iban}</p>}
+                      {settings.bic && <p className="break-all"><span className="font-sans font-semibold">BIC / SWIFT : </span>{settings.bic}</p>}
+                      {settings.rib && <p className="whitespace-pre-wrap break-words">{settings.rib}</p>}
+                      {!settings.iban && !settings.bic && !settings.rib && <p className="font-sans">Les coordonnées bancaires seront communiquées prochainement.</p>}
+                    </div>
+                  )}
                   {settings.titulaireRib && <p className="mt-3 text-[13px] text-ink/65">Titulaire : {settings.titulaireRib}</p>}
                 </div>
                 <p className="text-[12px] leading-relaxed text-ink/55">

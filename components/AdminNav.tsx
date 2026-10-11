@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ExternalLink, Inbox, LogOut, Settings2 } from "lucide-react";
+import { ExternalLink, Inbox, LogOut, Settings2, Landmark } from "lucide-react";
 
 const LIENS = [
   { href: "/admin", label: "Dossiers", Icon: Inbox },
   { href: "/admin/contact", label: "Coordonnées et RIB", Icon: Settings2 },
+  { href: "/admin/paiement", label: "Paiement", Icon: Landmark },
 ];
 
 export default function AdminNav({ societe }: { societe: string }) {
