@@ -40,6 +40,8 @@ export default function TableauDemandes({
   const [recherche, setRecherche] = useState("");
   const [ouvert, setOuvert] = useState<Demande | null>(null);
   const [note, setNote] = useState("");
+  const [suppressionEnCours, setSuppressionEnCours] = useState(false);
+  const [erreurSuppression, setErreurSuppression] = useState<string | null>(null);
 
   const visibles = useMemo(() => {
     const q = recherche.trim().toLowerCase();
@@ -87,9 +89,25 @@ export default function TableauDemandes({
 
   async function supprimer(id: string) {
     if (!confirm("Supprimer définitivement ce dossier ?")) return;
-    setDemandes((list) => list.filter((d) => d.id !== id));
-    setOuvert(null);
-    await fetch(`/api/demandes/${id}`, { method: "DELETE" });
+    setSuppressionEnCours(true);
+    setErreurSuppression(null);
+    try {
+      const response = await fetch(`/api/demandes/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || "La suppression du dossier a échoué.");
+      }
+      setDemandes((list) => list.filter((d) => d.id !== id));
+      setOuvert(null);
+    } catch (error) {
+      setErreurSuppression(
+        error instanceof Error ? error.message : "La suppression du dossier a échoué."
+      );
+    } finally {
+      setSuppressionEnCours(false);
+    }
   }
 
   function exporterCsv() {
@@ -412,11 +430,17 @@ export default function TableauDemandes({
                 <button
                   type="button"
                   onClick={() => supprimer(ouvert.id)}
-                  className="flex items-center gap-2 text-[13.5px] font-medium text-red-700 transition-opacity hover:opacity-70"
+                  disabled={suppressionEnCours}
+                  className="flex items-center gap-2 text-[13.5px] font-medium text-red-700 transition-opacity hover:opacity-70 disabled:cursor-wait disabled:opacity-50"
                 >
                   <Trash2 size={15} />
-                  Supprimer ce dossier
+                  {suppressionEnCours ? "Suppression…" : "Supprimer ce dossier"}
                 </button>
+                {erreurSuppression && (
+                  <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-[13px] text-red-800">
+                    {erreurSuppression}
+                  </p>
+                )}
               </div>
             </motion.aside>
           </>

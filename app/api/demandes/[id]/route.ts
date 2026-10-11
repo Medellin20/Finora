@@ -53,9 +53,17 @@ export async function DELETE(
   if (!(await estAdmin())) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
-  const ok = await deleteDemande(params.id);
-  if (!ok) {
-    return NextResponse.json({ error: "Dossier introuvable." }, { status: 404 });
+  try {
+    const ok = await deleteDemande(params.id);
+    if (!ok) {
+      return NextResponse.json({ error: "Dossier introuvable." }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("Impossible de supprimer le dossier :", error);
+    return NextResponse.json(
+      { error: "La suppression a échoué. Le dossier est toujours enregistré." },
+      { status: 500 }
+    );
   }
-  return NextResponse.json({ ok: true });
 }

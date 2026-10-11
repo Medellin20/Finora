@@ -88,14 +88,22 @@ export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean 
 
     // Le cookie est lu par Google Translate au chargement. Cette méthode reste
     // fiable même si son sélecteur n'est pas encore prêt ou sur mobile.
-    if (code === "fr") {
-      document.cookie = "googtrans=; path=/; max-age=0; SameSite=Lax";
-    } else {
-      document.cookie = `googtrans=/fr/${code}; path=/; max-age=31536000; SameSite=Lax`;
+    const cookieValue = `/fr/${code}`;
+    document.cookie = `googtrans=${cookieValue}; path=/; max-age=31536000; SameSite=Lax`;
+
+    // Google Translate peut laisser son cookie sur le domaine courant ou sur
+    // le domaine parent. Remplacer chaque variante évite que l'ancienne langue
+    // soit réappliquée après le retour au français.
+    const hostParts = window.location.hostname.split(".");
+    const domains = hostParts.length > 1
+      ? [hostParts.slice(-2).join("."), `.${hostParts.slice(-2).join(".")}`]
+      : [];
+    for (const domain of domains) {
+      document.cookie = `googtrans=${cookieValue}; domain=${domain}; path=/; max-age=31536000; SameSite=Lax`;
     }
 
     const selector = document.querySelector<HTMLSelectElement>(".goog-te-combo");
-    if (selector && code !== "fr") {
+    if (selector && Array.from(selector.options).some((option) => option.value === code)) {
       selector.value = code;
       selector.dispatchEvent(new Event("change", { bubbles: true }));
       return;

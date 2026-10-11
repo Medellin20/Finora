@@ -162,9 +162,17 @@ export async function updateDemande(
 
 export async function deleteDemande(id: string): Promise<boolean> {
   if (hasSupabaseConfig()) {
-    const { data, error } = await getSupabase().from("demandes").delete().eq("id", id).select("id");
+    const client = getSupabase();
+    const { data: existing, error: readError } = await client
+      .from("demandes")
+      .select("id")
+      .eq("id", id)
+      .maybeSingle();
+    if (readError) throw readError;
+    if (!existing) return false;
+    const { error } = await client.from("demandes").delete().eq("id", id);
     if (error) throw error;
-    return Boolean(data?.length);
+    return true;
   }
   if (useNetlifyBlobs()) {
     const store = blobStore();
