@@ -93,6 +93,13 @@ export default function LanguageSwitcher({ mobile = false }: { mobile?: boolean 
     } else {
       document.cookie = `googtrans=/fr/${code}; path=/; max-age=31536000; SameSite=Lax`;
     }
+
+    const selector = document.querySelector<HTMLSelectElement>(".goog-te-combo");
+    if (selector && code !== "fr") {
+      selector.value = code;
+      selector.dispatchEvent(new Event("change", { bubbles: true }));
+      return;
+    }
     window.location.reload();
   }
 

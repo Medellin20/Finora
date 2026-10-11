@@ -55,7 +55,7 @@ export default async function ContactPage() {
             </p>
           </Reveal>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {canaux.map((c, i) => (
               <Reveal key={c.label} delay={i * 0.08}>
                 <a
@@ -70,7 +70,9 @@ export default async function ContactPage() {
                   <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-ink/45">
                     {c.label}
                   </p>
-                  <p className="mt-2 text-[16px] font-semibold">{c.valeur}</p>
+                  <p className={`mt-2 min-w-0 text-[15px] font-semibold sm:text-[16px] ${c.label === "Téléphone" || c.label === "WhatsApp" ? "whitespace-nowrap tracking-tight" : "break-words"}`}>
+                    {c.valeur}
+                  </p>
                 </a>
               </Reveal>
             ))}

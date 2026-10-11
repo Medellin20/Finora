@@ -57,7 +57,7 @@ export default function Header({ settings }: { settings: Settings }) {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex">
+        <nav className="hidden items-center gap-5 xl:flex 2xl:gap-7">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -70,11 +70,11 @@ export default function Header({ settings }: { settings: Settings }) {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden shrink-0 items-center gap-3 xl:flex">
           <LanguageSwitcher />
           <a
             href={`tel:${settings.telephone.replace(/\s/g, "")}`}
-            className="flex items-center gap-2 font-mono text-[13px] text-ink/70 transition-colors hover:text-forest"
+            className="flex shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[13px] text-ink/70 transition-colors hover:text-forest"
           >
             <Phone size={14} />
             {settings.telephone}
@@ -115,6 +115,14 @@ export default function Header({ settings }: { settings: Settings }) {
                   {item.label}
                 </Link>
               ))}
+              <a
+                href={`tel:${settings.telephone.replace(/\s/g, "")}`}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-3 font-mono text-[14px] font-medium text-forest"
+              >
+                <Phone size={16} />
+                {settings.telephone}
+              </a>
               <div className="mt-2 border-t border-line pt-3">
                 <LanguageSwitcher mobile />
               </div>
