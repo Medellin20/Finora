@@ -51,6 +51,7 @@ export const DEFAULT_SETTINGS: Settings = {
   iban: "",
   bic: "",
   paymentLink: "",
+  paymentDisplay: "bank",
   titulaireRib: "",
   fraisDossier: 0,
   updatedAt: new Date().toISOString(),

@@ -65,6 +65,9 @@ export async function PUT(request: NextRequest) {
     const n = Number(body[champ]);
     if (Number.isFinite(n) && n >= 0) patch[champ] = n;
   }
+  if (body.paymentDisplay === "bank" || body.paymentDisplay === "link") {
+    patch.paymentDisplay = body.paymentDisplay;
+  }
 
   if (!patch.societe && typeof body.societe === "string") {
     return NextResponse.json(

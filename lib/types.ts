@@ -57,6 +57,7 @@ export interface Settings {
   iban: string;
   bic: string;
   paymentLink: string;
+  paymentDisplay: "bank" | "link";
   titulaireRib: string;
   fraisDossier: number;
   updatedAt: string;
