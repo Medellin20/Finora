@@ -6,7 +6,7 @@ import { ExternalLink, Inbox, LogOut, Settings2 } from "lucide-react";
 
 const LIENS = [
   { href: "/admin", label: "Dossiers", Icon: Inbox },
-  { href: "/admin/contact", label: "Coordonnées", Icon: Settings2 },
+  { href: "/admin/contact", label: "Coordonnées et RIB", Icon: Settings2 },
 ];
 
 export default function AdminNav({ societe }: { societe: string }) {

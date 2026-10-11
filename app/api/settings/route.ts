@@ -17,6 +17,8 @@ const CHAMPS_TEXTE: (keyof Settings)[] = [
   "facebook",
   "linkedin",
   "youtube",
+  "rib",
+  "titulaireRib",
 ];
 
 const CHAMPS_NOMBRE: (keyof Settings)[] = [
@@ -25,6 +27,7 @@ const CHAMPS_NOMBRE: (keyof Settings)[] = [
   "montantMax",
   "dureeMin",
   "dureeMax",
+  "fraisDossier",
 ];
 
 export async function GET() {

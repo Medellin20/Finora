@@ -16,7 +16,7 @@ import {
 } from "@/lib/content";
 import type { Settings } from "@/lib/types";
 
-const ETAPES = ["Votre projet", "Votre situation", "Vos coordonnées"];
+const ETAPES = ["Votre projet", "Votre situation", "Vos coordonnées", "Frais de dossier"];
 
 const CHAMPS_REQUIS: Record<number, string[]> = {
   0: ["typePret", "montant", "duree"],
@@ -88,7 +88,7 @@ export default function FormulaireDemande({
   }
 
   function suivant() {
-    if (valider(etape)) setEtape((e) => Math.min(e + 1, 2));
+    if (valider(etape)) setEtape((e) => Math.min(e + 1, 3));
   }
 
   async function envoyer() {
@@ -345,6 +345,28 @@ export default function FormulaireDemande({
                 </div>
               </div>
             )}
+
+            {etape === 3 && (
+              <section aria-labelledby="paiement-title" className="space-y-5">
+                <div>
+                  <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-ink/50">Dernière étape</p>
+                  <h2 id="paiement-title" className="mt-2 text-[24px] font-bold">Frais de dossier</h2>
+                </div>
+                <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[14px] font-semibold leading-relaxed text-red-700">
+                  Les frais de dossier doivent être impérativement payés pour l’acceptation et le suivi du dossier.
+                </p>
+                <div className="rounded-2xl border border-line bg-paper/70 p-5">
+                  <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Montant des frais</p>
+                  <p className="mt-1 text-[24px] font-bold">{formatMontant(settings.fraisDossier, settings.devise)}</p>
+                  <p className="mt-5 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Coordonnées bancaires pour le paiement</p>
+                  <p className="mt-1 whitespace-pre-wrap break-words font-mono text-[15px]">{settings.rib || "Les coordonnées bancaires seront communiquées prochainement."}</p>
+                  {settings.titulaireRib && <p className="mt-3 text-[13px] text-ink/65">Titulaire : {settings.titulaireRib}</p>}
+                </div>
+                <p className="text-[12px] leading-relaxed text-ink/55">
+                  Vérifiez le bénéficiaire et le montant auprès de l’établissement avant tout virement. L’envoi du formulaire ne confirme pas la réception d’un paiement.
+                </p>
+              </section>
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -369,7 +391,7 @@ export default function FormulaireDemande({
             Retour
           </button>
 
-          {etape < 2 ? (
+          {etape < 3 ? (
             <button type="button" onClick={suivant} className="btn-primary">
               Étape suivante
               <ArrowRight size={16} />

@@ -20,6 +20,8 @@ npm run dev                  # http://localhost:3000
 | ---------------- | ----------------------------------------------------------- |
 | `ADMIN_PASSWORD` | Mot de passe d'accès à `/admin`                              |
 | `AUTH_SECRET`    | Clé de signature du cookie de session (32+ caractères)       |
+| `SUPABASE_URL` | URL du projet Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | Clé serveur Supabase, à garder secrète |
 
 Générer une clé solide :
 
@@ -49,9 +51,12 @@ pour le contexte Production (et Deploy Previews si nécessaire) :
 | `AUTH_SECRET` | Une chaîne aléatoire d'au moins 32 caractères |
 
 Ne copiez jamais `.env.local` dans Git. Netlify fournit automatiquement la
-variable `NETLIFY=true` : l'application utilise alors **Netlify Blobs** pour
-conserver les dossiers et réglages entre les déploiements. En local, les
-fichiers JSON du dossier `data/` restent utilisés.
+Les données utilisent Supabase dès que ses deux variables sont renseignées.
+Sinon, Netlify Blobs est utilisé sur Netlify et les fichiers JSON de `data/`
+en local. Pour initialiser Supabase, créez un projet dans son tableau de bord,
+exécutez `supabase/migrations/202610110001_initial_schema.sql` dans le SQL
+Editor, puis configurez `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` dans
+votre déploiement. La clé service role reste côté serveur.
 
 ---
 
@@ -63,7 +68,7 @@ fichiers JSON du dossier `data/` restent utilisés.
 | ---------------------- | ---------------------------------------------------------------- |
 | `/`                    | Accueil : simulateur, atouts, parcours, financements, avis, FAQ  |
 | `/solutions/[slug]`    | Fiche détaillée par type de prêt (personnel, pro, immobilier)    |
-| `/demande`             | Formulaire de dépôt de dossier en 3 étapes                       |
+| `/demande`             | Formulaire de dépôt de dossier en 4 étapes                       |
 | `/contact`             | Canaux de contact, adresse, horaires                             |
 
 Le **simulateur** de la page d'accueil calcule la mensualité en direct
@@ -106,7 +111,7 @@ app/
     auth/login|logout/    Session admin
 components/               Header, Footer, Simulateur, formulaires, tableau
 lib/
-  store.ts                Accès aux données (à remplacer pour une vraie BDD)
+  store.ts                Accès aux données (Supabase, Netlify Blobs ou JSON local)
   auth.ts                 Session signée HMAC
   content.ts              Textes, référentiels, calculs financiers
   types.ts                Types partagés
@@ -134,8 +139,7 @@ En développement local, les données sont stockées dans des fichiers JSON sous
 `data/`. Sur Netlify, la couche de stockage bascule automatiquement vers
 Netlify Blobs afin que les dossiers et paramètres restent persistants.
 
-Tout l'accès aux données reste isolé dans `lib/store.ts`. Pour migrer plus tard
-vers une base relationnelle, conservez les signatures suivantes :
+Tout l'accès aux données reste isolé dans `lib/store.ts` :
 
 ```ts
 listDemandes()          // Promise<Demande[]>

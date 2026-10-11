@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { getStore } from "@netlify/blobs";
 import type { Demande, Settings } from "./types";
+import { getSupabase, hasSupabaseConfig } from "./supabase";
 
 /**
  * Stockage fichier (JSON) volontairement isolé dans ce module.
@@ -46,6 +47,9 @@ export const DEFAULT_SETTINGS: Settings = {
   dureeMin: 12,
   dureeMax: 240,
   devise: "EUR",
+  rib: "",
+  titulaireRib: "",
+  fraisDossier: 0,
   updatedAt: new Date().toISOString(),
 };
 
@@ -70,6 +74,11 @@ async function writeJson(file: string, data: unknown) {
 /* ---------- Demandes ---------- */
 
 export async function listDemandes(): Promise<Demande[]> {
+  if (hasSupabaseConfig()) {
+    const { data, error } = await getSupabase().from("demandes").select("data").order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data ?? []).map((row) => row.data as Demande);
+  }
   if (useNetlifyBlobs()) {
     const store = blobStore();
     const { blobs } = await store.list({ prefix: "demandes/", paginate: false });
@@ -96,6 +105,11 @@ export async function createDemande(
     statut: "nouvelle",
     note: "",
   };
+  if (hasSupabaseConfig()) {
+    const { error } = await getSupabase().from("demandes").insert({ id: demande.id, created_at: demande.createdAt, data: demande });
+    if (error) throw error;
+    return demande;
+  }
   if (useNetlifyBlobs()) {
     await blobStore().setJSON(`demandes/${demande.id}`, demande, {
       onlyIfNew: true,
@@ -112,6 +126,16 @@ export async function updateDemande(
   id: string,
   patch: Partial<Pick<Demande, "statut" | "note">>
 ): Promise<Demande | null> {
+  if (hasSupabaseConfig()) {
+    const client = getSupabase();
+    const { data: row, error: readError } = await client.from("demandes").select("data").eq("id", id).maybeSingle();
+    if (readError) throw readError;
+    if (!row) return null;
+    const next = { ...(row.data as Demande), ...patch };
+    const { error } = await client.from("demandes").update({ data: next }).eq("id", id);
+    if (error) throw error;
+    return next;
+  }
   if (useNetlifyBlobs()) {
     const store = blobStore();
     const key = `demandes/${id}`;
@@ -133,6 +157,11 @@ export async function updateDemande(
 }
 
 export async function deleteDemande(id: string): Promise<boolean> {
+  if (hasSupabaseConfig()) {
+    const { data, error } = await getSupabase().from("demandes").delete().eq("id", id).select("id");
+    if (error) throw error;
+    return Boolean(data?.length);
+  }
   if (useNetlifyBlobs()) {
     const store = blobStore();
     const key = `demandes/${id}`;
@@ -151,6 +180,11 @@ export async function deleteDemande(id: string): Promise<boolean> {
 /* ---------- Paramètres ---------- */
 
 export async function getSettings(): Promise<Settings> {
+  if (hasSupabaseConfig()) {
+    const { data, error } = await getSupabase().from("settings").select("data").eq("id", "main").maybeSingle();
+    if (error) throw error;
+    return { ...DEFAULT_SETTINGS, ...((data?.data as Partial<Settings> | undefined) ?? {}), devise: "EUR" };
+  }
   if (useNetlifyBlobs()) {
     const stored = (await blobStore().get("settings", {
       type: "json",
@@ -204,6 +238,11 @@ export async function saveSettings(patch: Partial<Settings>): Promise<Settings> 
     devise: "EUR",
     updatedAt: new Date().toISOString(),
   };
+  if (hasSupabaseConfig()) {
+    const { error } = await getSupabase().from("settings").upsert({ id: "main", data: next, updated_at: next.updatedAt });
+    if (error) throw error;
+    return next;
+  }
   if (useNetlifyBlobs()) {
     await blobStore().setJSON("settings", next);
     return next;

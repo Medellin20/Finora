@@ -86,6 +86,15 @@ export default function FormulaireParametres({
         </Section>
 
         <Section
+          titre="Paiement des frais de dossier"
+          description="Ces coordonnées bancaires sont affichées à la dernière étape du formulaire public."
+        >
+          <Champ label="Titulaire du compte" value={form.titulaireRib} onChange={set("titulaireRib")} />
+          <Champ label="Frais de dossier (EUR)" type="number" min="0" step="0.01" value={String(form.fraisDossier)} onChange={set("fraisDossier")} />
+          <Champ label="RIB / IBAN" value={form.rib} onChange={set("rib")} placeholder="IBAN et informations bancaires" large />
+        </Section>
+
+        <Section
           titre="Paramètres du simulateur"
           description="Bornes des curseurs et taux utilisé pour estimer les mensualités."
         >

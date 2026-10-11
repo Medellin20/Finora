@@ -53,5 +53,8 @@ export interface Settings {
   dureeMin: number;
   dureeMax: number;
   devise: string;
+  rib: string;
+  titulaireRib: string;
+  fraisDossier: number;
   updatedAt: string;
 }
