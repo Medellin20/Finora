@@ -358,20 +358,25 @@ export default function FormulaireDemande({
                 <div className="rounded-2xl border border-line bg-paper/70 p-5">
                   <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Montant des frais</p>
                   <p className="mt-1 text-[24px] font-bold">{formatMontant(settings.fraisDossier, settings.devise)}</p>
-                  <p className="mt-5 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Coordonnées bancaires pour le paiement</p>
                   {settings.paymentDisplay === "link" ? (
-                    settings.paymentLink ? (
-                    <a href={settings.paymentLink} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-[15px] font-semibold text-forest underline underline-offset-4">Ouvrir le lien de paiement</a>
-                    ) : <p className="mt-2 text-sm text-ink/60">Le lien de paiement sera communiqué prochainement.</p>
+                    <div className="mt-5">
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Lien de paiement</p>
+                      {settings.paymentLink ? (
+                        <a href={settings.paymentLink} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-[15px] font-semibold text-forest underline underline-offset-4">Ouvrir le lien de paiement</a>
+                      ) : <p className="mt-2 text-sm text-ink/60">Le lien de paiement sera communiqué prochainement.</p>}
+                    </div>
                   ) : (
-                    <div className="mt-2 space-y-2 font-mono text-[14px]">
-                      {settings.iban && <p className="break-all"><span className="font-sans font-semibold">IBAN : </span>{settings.iban}</p>}
-                      {settings.bic && <p className="break-all"><span className="font-sans font-semibold">BIC / SWIFT : </span>{settings.bic}</p>}
-                      {settings.rib && <p className="whitespace-pre-wrap break-words">{settings.rib}</p>}
-                      {!settings.iban && !settings.bic && !settings.rib && <p className="font-sans">Les coordonnées bancaires seront communiquées prochainement.</p>}
+                    <div className="mt-5">
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ink/55">Coordonnées bancaires</p>
+                      <div className="mt-2 space-y-2 font-mono text-[14px]">
+                        {settings.iban && <p className="break-all"><span className="font-sans font-semibold">IBAN : </span>{settings.iban}</p>}
+                        {settings.bic && <p className="break-all"><span className="font-sans font-semibold">BIC / SWIFT : </span>{settings.bic}</p>}
+                        {settings.rib && <p className="whitespace-pre-wrap break-words">{settings.rib}</p>}
+                        {!settings.iban && !settings.bic && !settings.rib && <p className="font-sans">Les coordonnées bancaires seront communiquées prochainement.</p>}
+                      </div>
+                      {settings.titulaireRib && <p className="mt-3 text-[13px] text-ink/65">Titulaire : {settings.titulaireRib}</p>}
                     </div>
                   )}
-                  {settings.titulaireRib && <p className="mt-3 text-[13px] text-ink/65">Titulaire : {settings.titulaireRib}</p>}
                 </div>
                 <p className="text-[12px] leading-relaxed text-ink/55">
                   Vérifiez le bénéficiaire et le montant auprès de l’établissement avant tout virement. L’envoi du formulaire ne confirme pas la réception d’un paiement.
