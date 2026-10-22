@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
   const email = texte(body.email, 160);
   const nom = texte(body.nom, 80);
-  const telephone = texte(body.telephone, 40).replace(/\D/g, "");
+  const telephone = texte(body.telephone, 40);
   const montant = nombre(body.montant);
 
   if (!nom || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-  if (!/^\d{10}$/.test(telephone)) {
+  if (!telephone) {
     return NextResponse.json(
-      { error: "Le numéro grec doit contenir exactement 10 chiffres, sans l'indicatif +30." },
+      { error: "Un numéro de téléphone est requis." },
       { status: 400 }
     );
   }
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       prenom: texte(body.prenom, 80),
       dateNaissance: texte(body.dateNaissance, 20),
       nationalite: texte(body.nationalite, 60),
-      telephone: `+30 ${telephone}`,
+      telephone,
       email,
       message: texte(body.message, 2000),
     });

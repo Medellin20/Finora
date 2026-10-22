@@ -79,10 +79,6 @@ export default function FormulaireDemande({
       setErreur("L'adresse e-mail saisie n'est pas valide.");
       return false;
     }
-    if (index === 2 && !/^\d{10}$/.test(form.telephone)) {
-      setErreur("Le numéro grec doit contenir exactement 10 chiffres, sans l'indicatif +30.");
-      return false;
-    }
     setErreur(null);
     return true;
   }
@@ -146,7 +142,7 @@ export default function FormulaireDemande({
         <h2 className="mt-6 text-[26px] font-bold">Dossier bien reçu</h2>
         <p className="mx-auto mt-3 max-w-[46ch] text-[15px] leading-relaxed text-ink/65">
           Un conseiller examine votre demande et vous rappelle sous 24 heures
-          ouvrées au +30 {form.telephone}. Conservez votre référence de suivi.
+          ouvrées au {form.telephone}. Conservez votre référence de suivi.
         </p>
         <p className="mt-7 inline-block rounded-xl bg-paper px-5 py-3 font-mono text-[15px] font-semibold">
           {reference}
@@ -299,28 +295,19 @@ export default function FormulaireDemande({
                   <label className="field-label" htmlFor="telephone">
                     Téléphone *
                   </label>
-                  <div className="flex">
-                    <span className="flex items-center rounded-l-xl border border-r-0 border-line bg-paper px-4 font-mono text-sm text-ink/65">
-                      +30
-                    </span>
-                    <input
-                      id="telephone"
-                      type="tel"
-                      inputMode="numeric"
-                      autoComplete="tel-national"
-                      value={form.telephone}
-                      onChange={(e) =>
-                        set("telephone")(e.target.value.replace(/\D/g, "").slice(0, 10))
-                      }
-                      maxLength={10}
-                      pattern="[0-9]{10}"
-                      placeholder="6912345678"
-                      className="field rounded-l-none"
-                      aria-describedby="telephone-aide"
-                    />
-                  </div>
+                  <input
+                    id="telephone"
+                    type="tel"
+                    autoComplete="tel"
+                    value={form.telephone}
+                    onChange={(e) => set("telephone")(e.target.value)}
+                    maxLength={40}
+                    placeholder="+33 6 12 34 56 78"
+                    className="field"
+                    aria-describedby="telephone-aide"
+                  />
                   <p id="telephone-aide" className="mt-1.5 text-xs text-ink/55">
-                    10 chiffres exactement, sans l'indicatif +30.
+                    Saisissez votre numéro, avec son indicatif international si nécessaire.
                   </p>
                 </div>
                 <Input

@@ -212,13 +212,6 @@ function normalizeSettings(stored: unknown): Settings {
   }
   settings.devise = "EUR";
   if (settings.paymentDisplay !== "bank" && settings.paymentDisplay !== "link") settings.paymentDisplay = "bank";
-  if (settings.montantMin === 500000) settings.montantMin = 1000;
-  if (settings.montantMax === 1000000) settings.montantMax = 150000000;
-  if (settings.dureeMax === 120) settings.dureeMax = 240;
-  if (settings.tauxAnnuel === 7.9) settings.tauxAnnuel = 3;
-  if (settings.societe === "Finora") settings.societe = DEFAULT_SETTINGS.societe;
-  if (settings.telephone.startsWith("+976")) settings.telephone = DEFAULT_SETTINGS.telephone;
-  if (settings.whatsapp.startsWith("+976")) settings.whatsapp = DEFAULT_SETTINGS.whatsapp;
   return settings;
 }
 

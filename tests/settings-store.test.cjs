@@ -52,6 +52,28 @@ test("des champs invalides ne font pas planter le rendu", async () => {
   assert.equal(settings.iban, "TEST");
 });
 
+test("les valeurs configurées dans l’administration ne sont pas remplacées au rendu", async () => {
+  const store = loadStore({
+    stored: {
+      societe: "Finora",
+      telephone: "+976 9911 2233",
+      whatsapp: "+976 9911 2233",
+      montantMin: 500000,
+      montantMax: 1000000,
+      dureeMax: 120,
+      tauxAnnuel: 7.9,
+    },
+  });
+  const settings = await store.getSettings();
+  assert.equal(settings.societe, "Finora");
+  assert.equal(settings.telephone, "+976 9911 2233");
+  assert.equal(settings.whatsapp, "+976 9911 2233");
+  assert.equal(settings.montantMin, 500000);
+  assert.equal(settings.montantMax, 1000000);
+  assert.equal(settings.dureeMax, 120);
+  assert.equal(settings.tauxAnnuel, 7.9);
+});
+
 test("une panne ne bloque pas le rendu public et interdit toute écriture", async () => {
   for (const supabase of [false, true]) {
     const store = loadStore({ supabase, failure: new Error("Storage offline") });
