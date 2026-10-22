@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { getSettings, saveSettings } from "@/lib/store";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
@@ -88,6 +89,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     const settings = await saveSettings(patch);
+    revalidatePath("/", "layout");
     return NextResponse.json({ settings });
   } catch {
     console.error("Échec de l’enregistrement des paramètres dans le stockage.");
