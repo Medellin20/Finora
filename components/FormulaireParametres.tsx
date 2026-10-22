@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, CircleAlert, Save } from "lucide-react";
 import type { Settings } from "@/lib/types";
+import { enregistrerParametres } from "@/lib/settings-client";
 
 export default function FormulaireParametres({
   initiales,
@@ -28,14 +29,8 @@ export default function FormulaireParametres({
     setEnvoi(true);
     setEtat("idle");
     try {
-      const res = await fetch("/api/settings", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Enregistrement impossible.");
-      setForm(data.settings);
+      const settings = await enregistrerParametres(form);
+      setForm(settings);
       setEtat("ok");
       setMessage("Coordonnées mises à jour sur tout le site.");
       router.refresh();

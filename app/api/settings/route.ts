@@ -43,7 +43,10 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
 
-  const body = await request.json().catch(() => ({}));
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Les données envoyées sont invalides." }, { status: 400 });
+  }
   const patch: Record<string, unknown> = {};
 
   for (const champ of CHAMPS_TEXTE) {
@@ -76,6 +79,14 @@ export async function PUT(request: NextRequest) {
     );
   }
 
-  const settings = await saveSettings(patch);
-  return NextResponse.json({ settings });
+  try {
+    const settings = await saveSettings(patch);
+    return NextResponse.json({ settings });
+  } catch {
+    console.error("Échec de l’enregistrement des paramètres dans le stockage.");
+    return NextResponse.json(
+      { error: "Les modifications n’ont pas pu être enregistrées. Vérifiez la configuration du stockage sur l’hébergement, puis réessayez." },
+      { status: 500 }
+    );
+  }
 }

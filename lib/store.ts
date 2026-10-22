@@ -23,7 +23,12 @@ function useNetlifyBlobs() {
   const globalContext = (
     globalThis as typeof globalThis & { netlifyBlobsContext?: unknown }
   ).netlifyBlobsContext;
-  return Boolean(process.env.NETLIFY_BLOBS_CONTEXT || globalContext);
+  // Le SDK Blobs consulte aussi Netlify.env, qui peut être distinct de
+  // process.env dans les fonctions Next.js.
+  const netlify = (globalThis as typeof globalThis & {
+    Netlify?: { env?: { get: (name: string) => string | undefined } };
+  }).Netlify;
+  return Boolean(netlify?.env?.get("NETLIFY_BLOBS_CONTEXT") || process.env.NETLIFY_BLOBS_CONTEXT || globalContext);
 }
 
 function blobStore() {

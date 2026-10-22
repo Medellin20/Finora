@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, CircleAlert, Save } from "lucide-react";
 import type { Settings } from "@/lib/types";
+import { enregistrerParametres } from "@/lib/settings-client";
 
 export default function FormulairePaiement({ initiales }: { initiales: Settings }) {
   const router = useRouter();
@@ -21,13 +22,7 @@ export default function FormulairePaiement({ initiales }: { initiales: Settings 
     setBusy(true);
     setResult(null);
     try {
-      const response = await fetch("/api/settings", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ titulaireRib: titulaire, rib, iban, bic, paymentLink: lien, paymentDisplay: affichage, fraisDossier: frais }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Enregistrement impossible.");
+      await enregistrerParametres({ titulaireRib: titulaire, rib, iban, bic, paymentLink: lien, paymentDisplay: affichage, fraisDossier: frais });
       setResult({ ok: true, text: "Coordonnées de paiement enregistrées." });
       router.refresh();
     } catch (error) {
