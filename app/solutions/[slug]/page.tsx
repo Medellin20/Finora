@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { SOLUTIONS, ETAPES } from "@/lib/content";
-import { getSettings } from "@/lib/store";
+import { getPublicSettings } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +32,7 @@ export default async function SolutionPage({
   const solution = SOLUTIONS.find((s) => s.slug === params.slug);
   if (!solution) notFound();
 
-  const settings = await getSettings();
+  const settings = await getPublicSettings();
   const autres = SOLUTIONS.filter((s) => s.slug !== solution.slug);
 
   return (

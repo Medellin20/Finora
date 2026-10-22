@@ -34,7 +34,14 @@ const CHAMPS_NOMBRE: (keyof Settings)[] = [
 ];
 
 export async function GET() {
-  return NextResponse.json({ settings: await getSettings() });
+  try {
+    return NextResponse.json({ settings: await getSettings() });
+  } catch {
+    return NextResponse.json(
+      { error: "Les paramètres sont temporairement indisponibles. Vérifiez la connexion au stockage." },
+      { status: 503 }
+    );
+  }
 }
 
 export async function PUT(request: NextRequest) {

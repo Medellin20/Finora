@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import AdminNav from "@/components/AdminNav";
-import { getSettings } from "@/lib/store";
+import { getPublicSettings } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSettings();
+  const settings = await getPublicSettings();
 
   return (
     <div className="min-h-screen bg-paper/45">

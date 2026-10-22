@@ -9,12 +9,12 @@ import {
   Solutions,
   Temoignages,
 } from "@/components/Sections";
-import { getSettings } from "@/lib/store";
+import { getPublicSettings } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const settings = await getSettings();
+  const settings = await getPublicSettings();
 
   return (
     <>

@@ -196,55 +196,61 @@ export async function deleteDemande(id: string): Promise<boolean> {
 
 /* ---------- Paramètres ---------- */
 
+function normalizeSettings(stored: unknown): Settings {
+  const settings = { ...DEFAULT_SETTINGS };
+  if (stored && typeof stored === "object" && !Array.isArray(stored)) {
+    const values = stored as Record<string, unknown>;
+    for (const key of Object.keys(DEFAULT_SETTINGS) as (keyof Settings)[]) {
+      const value = values[key];
+      if (
+        (typeof DEFAULT_SETTINGS[key] === "string" && typeof value === "string") ||
+        (typeof DEFAULT_SETTINGS[key] === "number" && typeof value === "number" && Number.isFinite(value) && value >= 0)
+      ) {
+        Object.assign(settings, { [key]: value });
+      }
+    }
+  }
+  settings.devise = "EUR";
+  if (settings.paymentDisplay !== "bank" && settings.paymentDisplay !== "link") settings.paymentDisplay = "bank";
+  if (settings.montantMin === 500000) settings.montantMin = 1000;
+  if (settings.montantMax === 1000000) settings.montantMax = 150000000;
+  if (settings.dureeMax === 120) settings.dureeMax = 240;
+  if (settings.tauxAnnuel === 7.9) settings.tauxAnnuel = 3;
+  if (settings.societe === "Finora") settings.societe = DEFAULT_SETTINGS.societe;
+  if (settings.telephone.startsWith("+976")) settings.telephone = DEFAULT_SETTINGS.telephone;
+  if (settings.whatsapp.startsWith("+976")) settings.whatsapp = DEFAULT_SETTINGS.whatsapp;
+  return settings;
+}
+
 export async function getSettings(): Promise<Settings> {
   if (hasSupabaseConfig()) {
     const { data, error } = await getSupabase().from("settings").select("data").eq("id", "main").maybeSingle();
     if (error) throw error;
-    return { ...DEFAULT_SETTINGS, ...((data?.data as Partial<Settings> | undefined) ?? {}), devise: "EUR" };
+    return normalizeSettings(data?.data);
   }
   if (useNetlifyBlobs()) {
-    const stored = (await blobStore().get("settings", {
+    const stored = await blobStore().get("settings", {
       type: "json",
       consistency: "strong",
-    })) as Partial<Settings> | null;
-    const settings = { ...DEFAULT_SETTINGS, ...(stored ?? {}) };
-    settings.devise = "EUR";
-    if (settings.montantMin === 500000) settings.montantMin = 1000;
-    if (settings.montantMax === 1000000) settings.montantMax = 150000000;
-    if (settings.dureeMax === 120) settings.dureeMax = 240;
-    if (settings.tauxAnnuel === 7.9) {
-      settings.tauxAnnuel = 3;
-    }
-    if (settings.societe === "Finora") {
-      settings.societe = DEFAULT_SETTINGS.societe;
-    }
-    if (settings.telephone.startsWith("+976")) {
-      settings.telephone = DEFAULT_SETTINGS.telephone;
-    }
-    if (settings.whatsapp.startsWith("+976")) {
-      settings.whatsapp = DEFAULT_SETTINGS.whatsapp;
-    }
-    return settings;
+    });
+    return normalizeSettings(stored);
   }
-  const stored = await readJson<Partial<Settings>>(SETTINGS_FILE, {});
-  const settings = { ...DEFAULT_SETTINGS, ...stored };
-  settings.devise = "EUR";
-  if (settings.montantMin === 500000) settings.montantMin = 1000;
-  if (settings.montantMax === 1000000) settings.montantMax = 150000000;
-  if (settings.dureeMax === 120) settings.dureeMax = 240;
-  if (settings.tauxAnnuel === 7.9) {
-    settings.tauxAnnuel = 3;
+  return normalizeSettings(await readJson<unknown>(SETTINGS_FILE, {}));
+}
+
+// Les pages publiques restent accessibles pendant une panne de stockage.
+// L’administration et les écritures conservent une lecture stricte pour éviter
+// de remplacer des paramètres existants par les valeurs de secours.
+export async function getPublicSettings(): Promise<Settings> {
+  try {
+    return await getSettings();
+  } catch (error) {
+    const code = error && typeof error === "object" && "code" in error
+      ? String(error.code).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 60)
+      : "storage_unavailable";
+    console.error("Lecture des paramètres indisponible :", code);
+    return { ...DEFAULT_SETTINGS };
   }
-  if (settings.societe === "Finora") {
-    settings.societe = DEFAULT_SETTINGS.societe;
-  }
-  if (settings.telephone.startsWith("+976")) {
-    settings.telephone = DEFAULT_SETTINGS.telephone;
-  }
-  if (settings.whatsapp.startsWith("+976")) {
-    settings.whatsapp = DEFAULT_SETTINGS.whatsapp;
-  }
-  return settings;
 }
 
 export async function saveSettings(patch: Partial<Settings>): Promise<Settings> {

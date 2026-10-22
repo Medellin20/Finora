@@ -4,7 +4,7 @@ import { ArrowRight, Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-re
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
-import { getSettings } from "@/lib/store";
+import { getPublicSettings } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const settings = await getSettings();
+  const settings = await getPublicSettings();
 
   const canaux = [
     {
