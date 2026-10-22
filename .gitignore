@@ -4,3 +4,4 @@ out
 .env.local
 data/*.json
 !data/.gitkeep
+.env
